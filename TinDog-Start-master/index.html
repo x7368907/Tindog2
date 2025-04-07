@@ -11,6 +11,57 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <link rel="stylesheet" href="css/styles.css">
+  <!-- GA4 安裝碼 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-FX4YRZK6PK'); // ← 這裡換成你的 ID
+</script>
+
+<!-- 自訂事件追蹤邏輯 -->
+<script>
+  // 點擊 Free Sign Up
+  document.addEventListener("DOMContentLoaded", function () {
+    const freeBtn = document.querySelector("#pricing .pricing-column:nth-child(1) .btn");
+    if (freeBtn) {
+      freeBtn.addEventListener("click", () => {
+        gtag('event', 'sign_up_click', {
+          method: 'free_plan'
+        });
+        console.log("🎯 GA4 Event: sign_up_click (free plan)");
+      });
+    }
+
+    // 停留超過 2 分鐘
+    setTimeout(() => {
+      gtag('event', 'stay_2_minutes', {
+        event_category: 'engagement',
+        event_label: 'User stayed more than 2 mins'
+      });
+      console.log("⏳ GA4 Event: stay_2_minutes");
+    }, 120000);
+
+    // 滑到底部
+    window.addEventListener('scroll', function () {
+      const scrollTop = window.scrollY;
+      const windowHeight = window.innerHeight;
+      const bodyHeight = document.body.offsetHeight;
+
+      if (scrollTop + windowHeight >= bodyHeight - 10) {
+        gtag('event', 'scroll_bottom', {
+          event_category: 'engagement',
+          event_label: 'User scrolled to bottom'
+        });
+        console.log("📜 GA4 Event: scroll_bottom");
+
+        // 只觸發一次
+        window.removeEventListener('scroll', arguments.callee);
+      }
+    });
+  });
+</script>
 </head>
 
 <body>
